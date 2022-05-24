@@ -19,7 +19,6 @@ return new class extends Migration
             $table->enum('type', ['recette', 'depense']);
             $table->decimal('transaction_amount', 8, 2);
             $table->decimal('balance', 8, 2);
-            $table->date('created_at');
             $table->timestamps();
         });
     }
