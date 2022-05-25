@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashHistoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/cash_management', [CashHistoryController::class, 'getAll'])->middleware(['auth'])->name('cash_management');
+Route::get('/', [CashHistoryController::class, 'index'])->middleware(['auth'])->name('index');
 
 require __DIR__.'/auth.php';
