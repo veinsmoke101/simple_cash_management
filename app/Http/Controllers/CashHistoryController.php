@@ -26,6 +26,26 @@ class CashHistoryController extends Controller
         return view('dashboard', compact('transactions'));
     }
 
+    // store transaction
+    public function store()
+    {
+        request()->validate([
+            'montant' => 'required',
+            'caisse' => 'required',
+            'date' => 'required',
+            'libelle' => 'required',
+        ]);
+
+        $transaction = new CashHistory();
+        $transaction->transaction_amount = request('montant');
+        $transaction->type = request('caisse');
+        $transaction->label = request('libelle');
+        $transaction->date = request('date');
+        $transaction->save();
+
+        return redirect()->back()->with('message', 'Transaction ajoutée avec succès');
+    }
+
     // edit cash history
     public function edit($id)
     {
@@ -45,15 +65,6 @@ class CashHistoryController extends Controller
             'libelle' => 'required',
         ]);
 
-//        if(request('caisse') === 'caisse') {
-//            $cashHistory->transaction_amount = '+' . request('montant');
-//        }else{
-//            $cashHistory->transaction_amount = '-' . request('montant');
-//        }
-//        $cashHistory->date = request('date');
-//        $cashHistory->label = request('libelle');
-//        $cashHistory->type = request('caisse');
-
         $last_transaction = CashHistory::orderBy('id', 'desc')->first();
         $balance = $last_transaction->balance;
         if(request('caisse') === 'depense' && $balance < request('montant')){
@@ -72,7 +83,7 @@ class CashHistoryController extends Controller
         ];
 
         $cashHistory->update($fields);
-        return redirect()->route('index');
+        return redirect()->route('index')->with('message', 'Transaction modifiée avec succès');
     }
 
 }
