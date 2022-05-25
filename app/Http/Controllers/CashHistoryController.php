@@ -102,4 +102,11 @@ class CashHistoryController extends Controller
         return redirect()->route('index')->with('message', 'Transaction modifiée avec succès');
     }
 
+    // delete cash history
+    public function delete(CashHistory $cashHistory)
+    {
+        $cashHistory->delete();
+        return redirect()->route('index')->with('message', 'Transaction supprimée avec succès');
+    }
+
 }

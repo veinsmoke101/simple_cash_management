@@ -28,5 +28,6 @@ Route::get('/edit/{id}', [CashHistoryController::class, 'edit'])->middleware(['a
 Route::get('/add', [CashHistoryController::class, 'add'])->middleware(['auth'])->name('add');
 Route::put('/transactions/{cashHistory}', [CashHistoryController::class, 'update'])->middleware(['auth'])->name('update');
 Route::post('/transactions', [CashHistoryController::class, 'store'])->middleware(['auth'])->name('store');
+Route::delete('/delete/{cashHistory}', [CashHistoryController::class, 'delete'])->middleware(['auth'])->name('delete');
 
 require __DIR__.'/auth.php';
