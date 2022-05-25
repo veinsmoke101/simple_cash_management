@@ -26,6 +26,11 @@ class CashHistoryController extends Controller
         return view('dashboard', compact('transactions'));
     }
 
+    public function add()
+    {
+        return view('addCash');
+    }
+
     // store transaction
     public function store()
     {
@@ -36,14 +41,25 @@ class CashHistoryController extends Controller
             'libelle' => 'required',
         ]);
 
+        $last_transaction = CashHistory::orderBy('id', 'desc')->first();
+        $balance = $last_transaction->balance;
+        if(request('caisse') === 'depense' && $balance < request('montant')){
+            return redirect()->back()->withErrors(['Le montant est supérieur au solde de la caisse']);
+
+        }
+
+        $balance = (request('caisse') === 'depense') ? $balance - request('montant') : $balance + request('montant');
+
+
         $transaction = new CashHistory();
         $transaction->transaction_amount = request('montant');
         $transaction->type = request('caisse');
         $transaction->label = request('libelle');
         $transaction->date = request('date');
+        $transaction->balance = $balance;
         $transaction->save();
 
-        return redirect()->back()->with('message', 'Transaction ajoutée avec succès');
+        return redirect()->route('index')->with('message', 'Transaction ajoutée avec succès');
     }
 
     // edit cash history
