@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/cash_management', [CashHistoryController::class, 'getAll'])->middleware(['auth'])->name('cash_management');
 Route::get('/', [CashHistoryController::class, 'index'])->middleware(['auth'])->name('index');
-Route::get('/edit/{id}', [CashHistoryController::class, 'edit'])->middleware(['auth'])->name('index');
+Route::get('/edit/{id}', [CashHistoryController::class, 'edit'])->middleware(['auth'])->name('edit');
+Route::put('/transactions/{cashHistory}', [CashHistoryController::class, 'update'])->middleware(['auth'])->name('update');
 
 require __DIR__.'/auth.php';
